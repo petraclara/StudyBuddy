@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBuddy | AI Academic Planner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-blob"></div>
+    <div class="container">
+        <header>
+            <h1>StudyBuddy</h1>
+            <p>Your AI-powered academic success partner.</p>
+        </header>
+
+        <main>
+            <section class="planner-form">
+                <h2>Add Your Exams</h2>
+                <div class="exam-list" id="examList">
+                    <!-- Exam items will be added here -->
+                    <div class="exam-item" id="exam-0">
+                        <div class="input-group">
+                            <label>Subject</label>
+                            <input type="text" class="subject-input" placeholder="e.g. Calculus II">
+                        </div>
+                        <div class="input-group">
+                            <label>Exam Date</label>
+                            <input type="date" class="date-input">
+                        </div>
+                        <div class="input-group">
+                            <label>Confidence (1-5)</label>
+                            <input type="range" class="confidence-input" min="1" max="5" value="3" oninput="this.nextElementSibling.value = this.value">
+                            <output>3</output>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="actions">
+                    <button id="addExamBtn" class="secondary-btn">+ Add Another Exam</button>
+                    <button id="generateBtn" class="primary-btn">Generate Study Plan ✨</button>
+                </div>
+            </section>
+
+            <section class="results-area hidden" id="resultsArea">
+                <div class="loading hidden" id="loading">
+                    <div class="spinner"></div>
+                    <p>Crafting your perfect schedule...</p>
+                </div>
+                
+                <div id="planContent">
+                    <!-- Plan will be rendered here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
