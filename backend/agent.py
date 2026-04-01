@@ -9,11 +9,16 @@ client = None
 def get_client():
     global client
     if not client:
-        # It's okay if this fails if we are just testing without a key initially
-        # But in a real run we need the key.
-        api_key = os.getenv("OPENAI_API_KEY")
-        if api_key:
-            client = OpenAI(api_key=api_key)
+        # Check for DeepSeek API Key first
+        deepseek_key = os.getenv("DEEPSEEK_API_KEY")
+        if deepseek_key:
+            client = OpenAI(api_key=deepseek_key, base_url="https://api.deepseek.com")
+            client.is_deepseek = True
+        else:
+            api_key = os.getenv("OPENAI_API_KEY")
+            if api_key:
+                client = OpenAI(api_key=api_key)
+                client.is_deepseek = False
     return client
 
 async def generate_study_plan(exams: List[ExamInput]) -> StudyPlan:
@@ -39,8 +44,9 @@ async def generate_study_plan(exams: List[ExamInput]) -> StudyPlan:
     user_prompt = f"Here are my upcoming exams: {json.dumps([e.model_dump() for e in exams], default=str)}"
 
     try:
+        model_name = "deepseek-chat" if getattr(client, "is_deepseek", False) else "gpt-4o"
         response = client.chat.completions.create(
-            model="gpt-4o", # Or gpt-3.5-turbo 
+            model=model_name, # Use deepseek-chat for DeepSeek or gpt-4o for OpenAI
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
@@ -83,5 +89,5 @@ def _generate_mock_plan(exams: List[ExamInput]) -> StudyPlan:
     return StudyPlan(
         plan_name="Backup Study Plan",
         sessions=sessions,
-        advice="This is a generated backup plan. Please configure your OpenAI API Key for personalized advice."
+        advice="This is a generated backup plan. Please configure your OpenAI or DeepSeek API Key for personalized advice."
     )
