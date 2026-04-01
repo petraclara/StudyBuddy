@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Call API
-            const response = await fetch('http://localhost:8000/plan', {
+            const response = await fetch('/plan', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

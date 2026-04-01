@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from models import StudyPlanRequest, StudyPlan
 from agent import generate_study_plan
 import os
@@ -35,3 +36,6 @@ async def create_plan(request: StudyPlanRequest):
         return plan
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# Mount the static frontend
+app.mount("/", StaticFiles(directory="../frontend", html=True), name="frontend")
